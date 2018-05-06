@@ -28,22 +28,17 @@ func NewTally() Tally {
 
 func (t *Tally) AddPacket(p PacketData) {
 	if p.SrcHost == t.hostIP {
-		t.TotalBytesReceived += p.Size
+		t.TotalBytesSent += p.Size
 	}
 	if p.DstHost == t.hostIP {
-		t.TotalBytesSent += p.Size
+		t.TotalBytesReceived += p.Size
 	}
 	t.BytesBySrcHost[t.reverseLookupHost(p.SrcHost)] += p.Size
 	t.BytesByDstHost[t.reverseLookupHost(p.DstHost)] += p.Size
 }
 
 func (t *Tally) TopSrcHosts() []string {
-	hosts := make([]string, len(t.BytesBySrcHost))
-	i := 0
-	for host := range t.BytesBySrcHost {
-		hosts[i] = host
-		i++
-	}
+	hosts := keys(t.BytesBySrcHost)
 	sort.Slice(hosts, func(i, j int) bool {
 		return t.BytesBySrcHost[hosts[i]] > t.BytesBySrcHost[hosts[j]]
 	})
@@ -51,12 +46,7 @@ func (t *Tally) TopSrcHosts() []string {
 }
 
 func (t *Tally) TopDstHosts() []string {
-	hosts := make([]string, len(t.BytesByDstHost))
-	i := 0
-	for host := range t.BytesByDstHost {
-		hosts[i] = host
-		i++
-	}
+	hosts := keys(t.BytesByDstHost)
 	sort.Slice(hosts, func(i, j int) bool {
 		return t.BytesByDstHost[hosts[i]] > t.BytesByDstHost[hosts[j]]
 	})
@@ -75,6 +65,16 @@ func (t *Tally) reverseLookupHost(host string) string {
 		}
 	}
 	return resolvedHost
+}
+
+func keys(stringIntMap map[string]int) []string {
+	keys := make([]string, len(stringIntMap))
+	i := 0
+	for key := range stringIntMap {
+		keys[i] = key
+		i++
+	}
+	return keys
 }
 
 func getHostIP() string {
