@@ -1,0 +1,8 @@
+package: github.com/jasonrsmith/hosttop
+import:
+- package: github.com/gizak/termui
+- package: github.com/google/gopacket
+  version: v1.1.14
+  subpackages:
+  - pcap
+- package: github.com/wayneashleyberry/terminal-dimensions

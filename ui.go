@@ -58,11 +58,6 @@ func InitUI(tally *Tally) {
 
 	var lastTotalBytesSent, lastTotalBytesReceived int
 	termui.Handle("/timer/1s", func(e termui.Event) {
-		// hack to get around lib caching
-		topSrcTable.FgColors = make([]termui.Attribute, 0)
-		topSrcTable.BgColors = make([]termui.Attribute, 0)
-		topDstTable.FgColors = make([]termui.Attribute, 0)
-		topDstTable.BgColors = make([]termui.Attribute, 0)
 		termHeight, _ := terminal.Height()
 		topSrcTable.Height = int(termHeight) - 10
 		topDstTable.Height = int(termHeight) - 10
@@ -89,6 +84,12 @@ func InitUI(tally *Tally) {
 
 		topSrcTable.Rows = srcRows
 		topDstTable.Rows = dstRows
+
+		// hack to get around lib caching
+		topSrcTable.FgColors = make([]termui.Attribute, 0)
+		topSrcTable.BgColors = make([]termui.Attribute, 0)
+		topDstTable.FgColors = make([]termui.Attribute, 0)
+		topDstTable.BgColors = make([]termui.Attribute, 0)
 		topSrcTable.Analysis()
 		topDstTable.Analysis()
 		topSrcTable.FgColors[0] = termui.ColorBlue
