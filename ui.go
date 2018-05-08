@@ -99,8 +99,8 @@ func InitUI(tally *Tally) {
 		tickTotalBytesReceived := tally.TotalBytesReceived - lastTotalBytesReceived
 		lastTotalBytesSent = tally.TotalBytesSent
 		lastTotalBytesReceived = tally.TotalBytesReceived
-		sparkLineSent.Data = append(sparkLineSent.Data, tickTotalBytesSent)
-		sparkLineReceived.Data = append(sparkLineReceived.Data, tickTotalBytesReceived)
+		sparkLineSent.Data = append([]int{tickTotalBytesSent}, sparkLineSent.Data...)
+		sparkLineReceived.Data = append([]int{tickTotalBytesReceived}, sparkLineReceived.Data...)
 		sparkLineTotalBytes.Lines[0].Title = fmt.Sprintf("Sent: %v", tally.TotalBytesSent)
 		sparkLineTotalBytes.Lines[1].Title = fmt.Sprintf("Rcvd: %v", tally.TotalBytesReceived)
 		sparkLineTotalBytes.Lines[0].Data = sparkLineSent.Data
